@@ -1,0 +1,3 @@
+{
+	"mongo": "mongodb://mongo-hostname:mongo-port/Your-DB-Name"
+}
