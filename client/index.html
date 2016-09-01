@@ -1,0 +1,66 @@
+<html>
+	<head>
+		<title>
+			Carworkz Help Chat
+		</title>
+		<style type="text/css">
+			#chatMsgDisplayBox {
+				height: 300px;
+				width: 250px;
+				max-width: 250px;
+			}
+			#msgWrapper {
+				float:left;
+				margin: 5px;
+				border: 1px #000 solid;
+			}
+			/*#chatContainer {
+				display: none;
+			}*/
+			.error {
+				color: red;
+			}
+			.priv {
+				color: gray;
+			}
+			#chatMsgBox {
+				width: 100%;
+				max-width: 100%;
+				margin: 0px;
+				outline: none;
+			}
+			#currentUser {
+				text-align: center;
+				border: 1px #ccc solid;
+			}
+		</style>
+	</head>
+	<body>
+		<input type="text" id="cwUserId" value="{{ userId }}">
+		<!-- <div id="loginDiv">
+			<p>Enter a Username: </p>
+			<p id="userError"></p>
+			<form id="loginForm">
+				<input type="text" size="30" id="username" />
+				<input type="submit" />
+			</form>
+		</div> -->
+		<select name="sessionUsers" id="sessionUsers">
+		</select>
+		<div id="chatContainer">
+			<div id="msgWrapper">
+				<div id="currentUser">Guest</div>
+				<div id="chatMsgDisplayBox"></div>
+				<form id="chatMsgForm">
+					<textarea id="chatMsgBox"></textarea>
+					<br/>
+					<input type="submit" value="Send" />
+				</form>
+			</div>
+			<div id="chatActiveUsers"></div>
+		</div>
+		<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+		<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+		<script type="text/javascript" src="/js/socket-io.js"></script>
+	</body>
+</html>
