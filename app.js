@@ -73,10 +73,12 @@ io.sockets.on('connection', function(socket) {
 
 	socket.join(channel);
 
-	socket.on('message', function(msg, currentChannel) {
+	socket.on('client message', function(msg, to, from) {
 		// io.emit('message', msg, socket.id);
-		console.log('New message from user');
-		io.sockets.in(currentChannel).emit('message', msg, socket.id);
+		console.log('New message from user: ' + to);
+		var toMsg = from + ': ' + msg;
+		io.sockets.in(to).emit('server message', toMsg, socket.id, from);
+		io.sockets.in(from).emit('server message', toMsg, socket.id, to);
 	});
 
 	socket.on('channel change', function(to, from) {
@@ -88,7 +90,7 @@ io.sockets.on('connection', function(socket) {
 		newChannel = channels.join('-');
 		console.log('User has changed the channel to : ' + newChannel);
 		socket.join(newChannel);
-		socket.emit('change channel', newChannel);
+		socket.emit('change channel', to);
 	});
 
 	function updateUsers() {
