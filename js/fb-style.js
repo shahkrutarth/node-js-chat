@@ -68,13 +68,13 @@ function register_popup(id, name)
             return;
         }
     }              
-
+    var channelName = getChannelName(name, $currentUserId.val());
     var element = '<div class="popup-box chat-popup" id="'+ id +'">';
     element += '<div class="popup-head">';
     element += '<div class="popup-head-left">'+ name +'</div>';
     element += '<div class="popup-head-right"><a href="javascript:close_popup(\''+ id +'\');">&#10005;</a></div>';
     element += '<div style="clear: both"></div></div>';
-    element += '<div class="popup-messages" id = "popup-messages-' + name + '"></div>';
+    element += '<div class="popup-messages" id = "popup-messages-' + channelName + '"></div>';
     element += '<form class="fb-chatMsgForm" id="' + name + '"><textarea id="fb-chatMsgBox' + name + '"></textarea><br/>';
     element += '<input type="submit" id="' + name + '" class="chat-start" value="Send" /></form></div>';
 

@@ -56,6 +56,14 @@ function generateRandomUserId(loginAs) {
 	return "USER-"+userId;
 }
 
+function getChannel(to, from) {
+	channels = []
+	channels.push(to);
+	channels.push(from);
+	channels = channels.sort();
+	newChannel = channels.join('-');
+	return newChannel;
+}
 
 // Open Socket Connection
 io.sockets.on('connection', function(socket) {
@@ -77,17 +85,13 @@ io.sockets.on('connection', function(socket) {
 		// io.emit('message', msg, socket.id);
 		console.log('New message from user: ' + to);
 		var toMsg = from + ': ' + msg;
-		io.sockets.in(to).emit('server message', toMsg, socket.id, from);
-		io.sockets.in(from).emit('server message', toMsg, socket.id, to);
+		var channelName = getChannel(to, from);
+		io.sockets.in(channelName).emit('server message', toMsg, channelName);
 	});
 
 	socket.on('channel change', function(to, from) {
 		socket.leave(channel);
-		channels = []
-		channels.push(to);
-		channels.push(from);
-		channels = channels.sort();
-		newChannel = channels.join('-');
+		newChannel = getChannel(to, from);
 		console.log('User has changed the channel to : ' + newChannel);
 		socket.join(newChannel);
 		socket.emit('change channel', to);

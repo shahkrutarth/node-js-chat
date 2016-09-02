@@ -13,15 +13,23 @@ function sendMessage(messageBoxObj, to) {
 	messageBoxObj.val('').focus();
 }
 
+function getChannelName(to, from) {
+	channels = []
+	channels.push(to);
+	channels.push(from);
+	channels = channels.sort();
+	newChannel = channels.join('-');
+	return newChannel;
+}
 
 $(document).ready(function() {
 	$message.focus();
 	// Initialize socket connection and add user
 	socket.emit('init', $currentUserId.val());
 
-	socket.on('server message', function(msg, id, from) {
+	socket.on('server message', function(msg, channel) {
 		// Change this as per new fb-style design
-		$('#popup-messages-'+from).append($('<li>').text(msg));
+		$('#popup-messages-' + channel).append($('<li>').text(msg));
 	});
 
 	socket.on('change channel', function(newChannel) {
