@@ -3,64 +3,12 @@
 		<title>
 			Carworkz Help Chat
 		</title>
-		<style type="text/css">
-			#chatMsgDisplayBox {
-				height: 300px;
-				width: 250px;
-				max-width: 250px;
-			}
-			#msgWrapper {
-				float:left;
-				margin: 5px;
-				border: 1px #000 solid;
-			}
-			/*#chatContainer {
-				display: none;
-			}*/
-			.error {
-				color: red;
-			}
-			.priv {
-				color: gray;
-			}
-			#chatMsgBox {
-				width: 100%;
-				max-width: 100%;
-				margin: 0px;
-				outline: none;
-			}
-			#currentUser {
-				text-align: center;
-				border: 1px #ccc solid;
-			}
-		</style>
 		<link rel="stylesheet" type="text/css" href="/css/fb-style.css">
 	</head>
 	<body>
-		<input type="text" id="cwUserId" value="{{ userId }}">
-		<!-- <div id="loginDiv">
-			<p>Enter a Username: </p>
-			<p id="userError"></p>
-			<form id="loginForm">
-				<input type="text" size="30" id="username" />
-				<input type="submit" />
-			</form>
-		</div> -->
-		<select name="sessionUsers" id="sessionUsers">
-		</select>
-		<div id="chatContainer">
-			<div id="msgWrapper">
-				<div id="currentUser">Guest</div>
-				<div id="chatMsgDisplayBox"></div>
-				<form id="chatMsgForm">
-					<textarea id="chatMsgBox"></textarea>
-					<br/>
-					<input type="submit" value="Send" />
-				</form>
-			</div>
-			<div id="chatActiveUsers"></div>
-		</div>
-
+		<input type="hidden" id="cwUserId" value="{{ userId }}">
+		<p>Welcome Guest, Your are logged in as <b>{{ userId }}</b>, for current session.</p>
+		<p><span>Note: If you reload the page your session will change</span></p>
 		<div class="chat-sidebar">
 			
 		</div>

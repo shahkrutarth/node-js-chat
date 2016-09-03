@@ -1,6 +1,7 @@
 // Set root directory
 ROOT_DIR = __dirname + '/';
 
+// Load all required packages
 var express = require('express'),
 	app = express(),
 	server = require('http').createServer(app),
@@ -10,7 +11,6 @@ var express = require('express'),
 	randomString = require("randomstring"),
 	path = require('path'),
 	_ = require('underscore'),
-	cwSockets = {},
 	users = {};
 
 // Load mongoDB connection file
@@ -37,7 +37,7 @@ app.engine('html', swig.renderFile);
 
 // Start you chat application on below port
 server.listen(3030);
-console.log('Visit you browser and tyre http://localhost:3030\n');
+console.log('Visit you browser with http://localhost:3030 to start playing with chat app\n');
 
 
 app.use(express.static(path.join(__dirname, '.'),[{'Last-Modified':'TRUE'}]));
@@ -67,42 +67,44 @@ function getChannel(to, from) {
 
 // Open Socket Connection
 io.sockets.on('connection', function(socket) {
-	var channel = 'channel-a';
+
 	// called when user accesses the app
 	socket.on('init', function(username) {
-		console.log('User initiated');
-		console.log(username);
+		console.log('User initiated with user id : ' + username);
 		users[username] = socket.id;    // Store a reference to your socket ID
-        cwSockets[socket.id] = { username : username, socket : socket };  // Store a reference to your socket
-        socket.leave(channel);
+		socket.cwUserId = username;
         socket.join(username);
         updateUsers();
 	});
 
-	socket.join(channel);
-
 	socket.on('client message', function(msg, to, from) {
-		// io.emit('message', msg, socket.id);
-		console.log('New message from user: ' + to);
 		var toMsg = from + ': ' + msg;
 		var channelName = getChannel(to, from);
 		io.sockets.in(channelName).emit('server message', toMsg, channelName);
 	});
 
 	socket.on('channel change', function(to, from) {
-		socket.leave(channel);
+		// socket.leave(channel);
 		newChannel = getChannel(to, from);
-		console.log('User has changed the channel to : ' + newChannel);
 		socket.join(newChannel);
+		console.log('\n"' + from + '" Joined new channel "' + newChannel + '" to communicate with "' + to + '"\n');
 		socket.emit('change channel', to);
 	});
 
-	function updateUsers() {
-		console.log('Users list updated');
-		io.sockets.emit('usernames', Object.keys(users));
-	}
+	// Leave channel when user closes the pop-up window
+	socket.on('channel disconnect', function(channelName) {
+		console.log('\n' + socket.cwUserId + ' Left the Channel: ' + channelName);
+		socket.leave(channelName);
+	});
 
-	function iCaseCompare(strA, strB) {
-	    return strA.toLowerCase().localeCompare(strB.toLowerCase());
+	// Disconnect from socket when window is closed
+	socket.on('disconnect', function (argument) {
+		if (!socket.cwUserId) { return }
+		delete users[socket.cwUserId]
+		updateUsers();
+	});
+
+	function updateUsers() {
+		io.sockets.emit('usernames', Object.keys(users));
 	}
 });

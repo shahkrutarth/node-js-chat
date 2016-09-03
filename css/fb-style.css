@@ -74,6 +74,14 @@ body
     border: 1px solid rgba(29, 49, 91, .3);
 }
 
+.popup-box .fb-chatMsgBox
+{
+    width:99%;
+    max-width:99%;
+    height:15%;
+    padding:1px;
+}
+
 .popup-box .popup-head
 {
     background-color: #6d84b4;
